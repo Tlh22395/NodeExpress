@@ -1,4 +1,3 @@
-// include express dependencies
 var express = require("express");
 
 // use express router to create router handlers
@@ -13,17 +12,17 @@ router.get("/", function (req, res) {
 });
 
 // api route to get all the burgers from database
-router.get("/burger", function (req, res) {
+router.get("/burgers", function (req, res) {
   burger.all(function (data) {
     res.json({ burgers: data });
   });
 });
 
 //api route to add new burger
-router.post("/burger", function (req, res) {
+router.post("/burgers", function (req, res) {
   burger.create(
-    ["burger_name", "eaten"],
-    [req.body.burger_name, req.body.eaten],
+    ["burger_name", "devoured"],
+    [req.body.burger_name, req.body.devoured],
     function (result) {
       // Send back the ID of the new quote
       res.json({ id: result.insertId });
@@ -32,14 +31,14 @@ router.post("/burger", function (req, res) {
 });
 
 //api route to update devoured field of existing burger
-router.put("/burger/:id", function (req, res) {
+router.put("/burgers/:id", function (req, res) {
   var condition = "id = " + req.params.id;
 
   console.log("condition", condition);
 
   burger.update(
     {
-      eaten: req.body.eaten,
+      devoured: req.body.devoured,
     },
     condition,
     function (result) {
@@ -54,7 +53,7 @@ router.put("/burger/:id", function (req, res) {
 });
 
 //api route to delete existing burger
-router.delete("/burger/:id", function (req, res) {
+router.delete("/burgers/:id", function (req, res) {
   var condition = "id = " + req.params.id;
 
   burger.delete(condition, function (result) {

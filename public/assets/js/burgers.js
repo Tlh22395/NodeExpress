@@ -13,16 +13,16 @@ $(function () {
       var new_elem =
         "<li>" +
         burgers[i].burger_name +
-        "</t> <button class='change-eaten btn btn-success' data-id='" +
+        "</t> <button class='change-devour btn btn-success' data-id='" +
         burgers[i].id +
-        "' data-neweaten='" +
-        !burgers[i].eaten +
+        "' data-newdevour='" +
+        !burgers[i].devoured +
         "'>";
 
-      if (burgers[i].eaten) {
-        new_elem += "Time to eat!";
+      if (burgers[i].devoured) {
+        new_elem += "Time to eat";
       } else {
-        new_elem += "eaten!";
+        new_elem += "Eaten";
       }
 
       new_elem += "</button> </t>";
@@ -32,7 +32,7 @@ $(function () {
         burgers[i].id +
         "'>delete</button></li>";
 
-      if (burgers[i].eaten) {
+      if (burgers[i].devoured) {
         eatenBurgersElem.append(new_elem);
       } else {
         notEatenBurgersElem.append(new_elem);
@@ -47,7 +47,7 @@ $(function () {
 
     var newBurger = {
       burger_name: $("#burger_name").val().trim(),
-      eaten: $("[name=eaten]:checked").val().trim(),
+      devoured: $("[name=devoured]:checked").val().trim(),
     };
 
     // Send the POST request.
@@ -63,23 +63,22 @@ $(function () {
     });
   });
 
-  // eaten onclick to update value in db
-  $(document).on("click", ".change-eaten", function (event) {
+  $(document).on("click", ".change-devour", function (event) {
     var id = $(this).data("id");
-    var newEaten = $(this).data("neweaten") === true;
+    var newDevour = $(this).data("newdevour") === true;
 
-    var newEatenState = {
-      eaten: newEaten,
+    var newDevourState = {
+      devoured: newDevour,
     };
 
     // Send the PUT request.
     $.ajax("/burgers/" + id, {
       type: "PUT",
-      data: JSON.stringify(newEatenState),
+      data: JSON.stringify(newDevourState),
       dataType: "json",
       contentType: "application/json",
     }).then(function () {
-      console.log("changed eaten to", newEaten);
+      console.log("changed devour to", newDevour);
       // Reload the page to get the updated list
       location.reload();
     });
