@@ -13,16 +13,16 @@ $(function () {
       var new_elem =
         "<li>" +
         burgers[i].burger_name +
-        "</t> <button class='change-devour btn btn-success' data-id='" +
+        "</t> <button class='change-eaten btn btn-success' data-id='" +
         burgers[i].id +
-        "' data-newdevour='" +
-        !burgers[i].devoured +
+        "' data-neweaten='" +
+        !burgers[i].eaten +
         "'>";
 
-      if (burgers[i].devoured) {
-        new_elem += "DEVOUR TIME!";
+      if (burgers[i].eaten) {
+        new_elem += "Time to eat!";
       } else {
-        new_elem += "DEVOURED!";
+        new_elem += "eaten!";
       }
 
       new_elem += "</button> </t>";
@@ -30,9 +30,9 @@ $(function () {
       new_elem +=
         "<button class='delete-burger btn btn-danger' data-id='" +
         burgers[i].id +
-        "'>DELETE!</button></li>";
+        "'>delete</button></li>";
 
-      if (burgers[i].devoured) {
+      if (burgers[i].eaten) {
         eatenBurgersElem.append(new_elem);
       } else {
         notEatenBurgersElem.append(new_elem);
@@ -47,7 +47,7 @@ $(function () {
 
     var newBurger = {
       burger_name: $("#burger_name").val().trim(),
-      devoured: $("[name=devoured]:checked").val().trim(),
+      eaten: $("[name=eaten]:checked").val().trim(),
     };
 
     // Send the POST request.
@@ -63,23 +63,23 @@ $(function () {
     });
   });
 
-  // devoured onclick to update value in db
-  $(document).on("click", ".change-devour", function (event) {
+  // eaten onclick to update value in db
+  $(document).on("click", ".change-eaten", function (event) {
     var id = $(this).data("id");
-    var newDevour = $(this).data("newdevour") === true;
+    var newEaten = $(this).data("neweaten") === true;
 
-    var newDevourState = {
-      devoured: newDevour,
+    var newEatenState = {
+      eaten: newEaten,
     };
 
     // Send the PUT request.
     $.ajax("/burgers/" + id, {
       type: "PUT",
-      data: JSON.stringify(newDevourState),
+      data: JSON.stringify(newEatenState),
       dataType: "json",
       contentType: "application/json",
     }).then(function () {
-      console.log("changed devour to", newDevour);
+      console.log("changed eaten to", newEaten);
       // Reload the page to get the updated list
       location.reload();
     });
